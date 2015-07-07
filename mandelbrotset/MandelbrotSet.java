@@ -6,12 +6,17 @@ package mandelbrotset;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author trinch
  */
-public class drawPanel extends javax.swing.JPanel {
+public class MandelbrotSet extends javax.swing.JPanel {
     int MaxIterations = 30;
     int zoom;
     double minRe;
@@ -24,10 +29,11 @@ public class drawPanel extends javax.swing.JPanel {
     int width;
     double zoomFactor = 4/5.;
     double widthToHeightRatio = 3/2.;
+    BufferedImage pic;
     /**
      * Creates new form drawPanel
      */
-    public drawPanel() {
+    public MandelbrotSet() {
         initComponents();
         this.setBackground(Color.BLACK);
         zoom = 1;
@@ -36,6 +42,7 @@ public class drawPanel extends javax.swing.JPanel {
         minRe = -2.0;
         minIm = -1.0;
         maxRe = 1.0;
+        this.setBackground(Color.BLACK);
     }
 
     public void zoomInc() {
@@ -53,6 +60,7 @@ public class drawPanel extends javax.swing.JPanel {
     }
     
     public void zoomDec() {
+               
         int heightZoom = (int)(1/zoomFactor * height);
         int widthZoom = (int)(widthToHeightRatio * heightZoom);
         
@@ -97,11 +105,19 @@ public class drawPanel extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g)
     {
-
-        System.out.println(zoom);
+        super.paintComponent(g); // Do the original draw
         
         height = this.getHeight();
         width = 3 * (height/2);//-100;s
+        
+        if (this.pic != null) {
+            g.drawImage(pic, (getWidth()-width)/2, 0, width, height, null);
+            return;
+        }
+        pic = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR );
+        
+        System.out.println(zoom);
+        
         // some number is for maintaining aspect ratio, width of the blank space on the left/right
         int someNumber = (this.getWidth() - width) / 2;
         
@@ -114,23 +130,22 @@ public class drawPanel extends javax.swing.JPanel {
         re_factor = (maxRe-minRe)/(width-1);
         im_factor = (maxIm-minIm)/(height-1);
         
-        super.paintComponent(g); // Do the original draw
+        
         
         for(int y=0; y<height; y++)
         {
             // y goes down
             double c_im = minIm + (y)*im_factor;
-            for(int x=someNumber + 0; x<someNumber + width; x++)
+            for(int x=0; x<width; x++)
             {
-                double c_re = minRe + (x-someNumber)*re_factor;
+                double c_re = minRe + x*re_factor;
 
                 
                 // Calculate whether c belongs to the Mandelbrot set or
                 // not and draw a pixel at coordinates (x,y) accordingly
                 int b;
                 if ( (b = belongsToSet(c_re, c_im)) < 0) {
-                    g.setColor(Color.BLACK);
-                    g.drawOval(x, y, 1, 1);
+                    pic.setRGB(x,y, Color.BLACK.getRGB());
                 } else {
                     /* belongsToSet function returns a number between 0 and max number of iterations,
                         that number tells us at which number the inner loop has ended, or in other words,
@@ -138,12 +153,11 @@ public class drawPanel extends javax.swing.JPanel {
                         (the closer the complex number is to the border of the set, the longer it will
                         take for it to tend to infinity)
                     */
-                    g.setColor(getShadingColor(b));                  
-                    g.drawOval(x, y, 1, 1);
+                    pic.setRGB(x,y, getShadingColor(b).getRGB());
                 }
             }
         }
-         
+        g.drawImage(pic, someNumber, 0, width, height, null);  
         
     }
     /**
@@ -155,20 +169,102 @@ public class drawPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        saveImageButton = new javax.swing.JButton();
+        zoomInButton = new javax.swing.JButton();
+        zoomOutButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+
+        saveImageButton.setText("Save image");
+        saveImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButtonActionPerformed(evt);
+            }
+        });
+
+        zoomInButton.setText("Zoom in");
+        zoomInButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomInButtonActionPerformed(evt);
+            }
+        });
+
+        zoomOutButton.setText("Zoom out");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("MANDELBROT SET");
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("f(z) = z^2 + z");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(saveImageButton, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                            .addComponent(zoomInButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(zoomOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(0, 225, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+                .addComponent(zoomOutButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(zoomInButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveImageButton)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void saveImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButtonActionPerformed
+
+        // Show the file chooser and get the value returned.
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        String image_name = new String();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            image_name = jFileChooser1.getSelectedFile().getPath();
+        }
+
+        try {
+            File outputfile = new File(image_name + ".png");
+            ImageIO.write(pic, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_saveImageButtonActionPerformed
+
+    private void zoomInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInButtonActionPerformed
+        zoomInc();
+    }//GEN-LAST:event_zoomInButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton saveImageButton;
+    private javax.swing.JButton zoomInButton;
+    private javax.swing.JButton zoomOutButton;
     // End of variables declaration//GEN-END:variables
 
     private int belongsToSet(double c_re, double c_im) {

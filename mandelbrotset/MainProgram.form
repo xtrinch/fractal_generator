@@ -27,6 +27,11 @@
         <Property name="text" type="java.lang.String" value="jMenuItem2"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JMenuItem" name="jMenuItem3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jMenuItem3"/>
+      </Properties>
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu2">
@@ -48,6 +53,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mandelbrotSetMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="newtonFractalMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Newton Fractal"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newtonFractalMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -127,6 +140,14 @@
             <Property name="text" type="java.lang.String" value="Random fractals"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="fractalTerrainMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Fractal terrain"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fractalTerrainMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="brownianTreeMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Brownian tree"/>
@@ -227,7 +248,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="mandelbrotset.drawPanel" name="drawPanel1">
+    <Container class="mandelbrotset.MandelbrotSet" name="drawPanel1">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="Center"/>

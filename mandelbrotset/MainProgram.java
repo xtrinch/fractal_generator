@@ -76,6 +76,8 @@ public class MainProgram extends javax.swing.JFrame {
         buttonPanel.getInputMap(JPanel.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
         KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "zoomout");
         buttonPanel.getActionMap().put("zoomout", zoomoutAction);
+        
+        changePanel(new MandelbrotSet());
     }
 
     Action leftAction = new AbstractAction() {
@@ -126,6 +128,7 @@ public class MainProgram extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         buttonPanel = new javax.swing.JPanel();
         zoom = new javax.swing.JButton();
         zoomout = new javax.swing.JButton();
@@ -133,11 +136,12 @@ public class MainProgram extends javax.swing.JFrame {
         up = new javax.swing.JButton();
         down = new javax.swing.JButton();
         right = new javax.swing.JButton();
-        drawPanel1 = new mandelbrotset.drawPanel();
+        drawPanel1 = new mandelbrotset.MandelbrotSet();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         juliaSetMenuItem = new javax.swing.JMenuItem();
         mandelbrotSetMenuItem = new javax.swing.JMenuItem();
+        newtonFractalMenuItem = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         pythagorasTreeMenuItem = new javax.swing.JMenuItem();
         kochSnowflakeMenuItem = new javax.swing.JMenuItem();
@@ -148,6 +152,7 @@ public class MainProgram extends javax.swing.JFrame {
         sierpinskiGasketMenuItem = new javax.swing.JMenuItem();
         dragonCurveMenuItem = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+        fractalTerrainMenuItem = new javax.swing.JMenuItem();
         brownianTreeMenuItem = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
@@ -155,6 +160,8 @@ public class MainProgram extends javax.swing.JFrame {
         jMenuItem1.setText("jMenuItem1");
 
         jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -241,6 +248,14 @@ public class MainProgram extends javax.swing.JFrame {
         });
         jMenu2.add(mandelbrotSetMenuItem);
 
+        newtonFractalMenuItem.setText("Newton Fractal");
+        newtonFractalMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newtonFractalMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(newtonFractalMenuItem);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("L-systems");
@@ -309,6 +324,14 @@ public class MainProgram extends javax.swing.JFrame {
 
         jMenu5.setText("Random fractals");
 
+        fractalTerrainMenuItem.setText("Fractal terrain");
+        fractalTerrainMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fractalTerrainMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu5.add(fractalTerrainMenuItem);
+
         brownianTreeMenuItem.setText("Brownian tree");
         brownianTreeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -334,8 +357,8 @@ public class MainProgram extends javax.swing.JFrame {
         JPanel panel = (JPanel) contain.getComponent(1);
         if (panel instanceof JuliaSet)
             ((JuliaSet)panel).zoomInc();
-        if (panel instanceof drawPanel)
-            ((drawPanel)panel).zoomInc();
+        if (panel instanceof MandelbrotSet)
+            ((MandelbrotSet)panel).zoomInc();
         if (panel instanceof KochSnowflake)
             ((KochSnowflake)panel).level += 1;
         this.repaint();
@@ -347,8 +370,8 @@ public class MainProgram extends javax.swing.JFrame {
         if (panel instanceof JuliaSet)
             ((JuliaSet)panel).zoomDec();
             System.out.println("julia repaint");
-        if (panel instanceof drawPanel)
-            ((drawPanel)panel).zoomDec();
+        if (panel instanceof MandelbrotSet)
+            ((MandelbrotSet)panel).zoomDec();
         if (panel instanceof KochSnowflake) 
             ((KochSnowflake)panel).level -= 1;
         this.repaint();
@@ -374,7 +397,7 @@ public class MainProgram extends javax.swing.JFrame {
     }//GEN-LAST:event_juliaSetMenuItemActionPerformed
 
     private void mandelbrotSetMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mandelbrotSetMenuItemActionPerformed
-        changePanel(new drawPanel());
+        changePanel(new MandelbrotSet());
     }//GEN-LAST:event_mandelbrotSetMenuItemActionPerformed
 
     private void pythagorasTreeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythagorasTreeMenuItemActionPerformed
@@ -409,6 +432,14 @@ public class MainProgram extends javax.swing.JFrame {
         changePanel(new BrownianTree());
     }//GEN-LAST:event_brownianTreeMenuItemActionPerformed
 
+    private void newtonFractalMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newtonFractalMenuItemActionPerformed
+        changePanel(new NewtonFractal());
+    }//GEN-LAST:event_newtonFractalMenuItemActionPerformed
+
+    private void fractalTerrainMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fractalTerrainMenuItemActionPerformed
+        changePanel(new FractalTerrain());
+    }//GEN-LAST:event_fractalTerrainMenuItemActionPerformed
+
     private void changePanel(JPanel panel) {
         Container contain = getContentPane();
         contain.remove(1);
@@ -434,9 +465,10 @@ public class MainProgram extends javax.swing.JFrame {
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton down;
     private javax.swing.JMenuItem dragonCurveMenuItem;
-    private mandelbrotset.drawPanel drawPanel1;
+    private mandelbrotset.MandelbrotSet drawPanel1;
     private javax.swing.JMenuItem fractalFlameMenuItem;
     private javax.swing.JMenuItem fractalPlantMenuItem;
+    private javax.swing.JMenuItem fractalTerrainMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -445,11 +477,13 @@ public class MainProgram extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JMenuItem juliaSetMenuItem;
     private javax.swing.JMenuItem kochSnowflakeMenuItem;
     private javax.swing.JButton left;
     private javax.swing.JMenuItem mandelbrotSetMenuItem;
+    private javax.swing.JMenuItem newtonFractalMenuItem;
     private javax.swing.JMenuItem pythagorasTreeMenuItem;
     private javax.swing.JButton right;
     private javax.swing.JMenuItem sierpinskiGasketMenuItem;
