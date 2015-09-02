@@ -3,22 +3,22 @@ Java desktop application for generating different types of fractal images.
 
 Types of fractals it can generate:
 
-##Mandelbrot set
+###Mandelbrot set
 
-##Julia set
+###Julia set
 
-##Newton fractals
+###Newton fractals
 
-##Barnsley's fern
+###Barnsley's fern
 
-##Dragon curve
+###Dragon curve
 
-##Pythagora's tree
+###Pythagora's tree
 
-##Brownian tree
+###Brownian tree
 
-##Fractal terrain
+###Fractal terrain
 
-##Sierpinski's gasket
+###Sierpinski's gasket
 
-##Fractal flames
+###Fractal flames
