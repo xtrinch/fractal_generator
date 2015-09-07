@@ -106,12 +106,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Real part:"/>
+        <Property name="text" type="java.lang.String" value="Re:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Im. part:"/>
+        <Property name="text" type="java.lang.String" value="Im:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="imagFormattedField">
@@ -136,7 +136,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="redrawImageButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Redraw image"/>
+        <Property name="text" type="java.lang.String" value="Redraw"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="redrawImageButtonActionPerformed"/>

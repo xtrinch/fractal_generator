@@ -8,17 +8,26 @@ package mandelbrotset;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author trinch
  */
 public class BarnsleysFern extends javax.swing.JPanel {
-
-    /**
-     * Creates new form SinusoidalFlame
-     */
+    
+    int heightOrig;
+    int widthOrig;
+    BufferedImage pic;
+    
     public BarnsleysFern() {
+        heightOrig = this.getHeight();
+        widthOrig = this.getWidth();
         initComponents();
     }
 
@@ -31,30 +40,85 @@ public class BarnsleysFern extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        saveImageButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
+        saveImageButton1.setText("Save image");
+        saveImageButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("BARNSLEYS FERN");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(246, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveImageButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveImageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButton1ActionPerformed
+
+        // Show the file chooser and get the value returned.
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        String image_name = new String();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            image_name = jFileChooser1.getSelectedFile().getPath();
+        }
+
+        try {
+            File outputfile = new File(image_name + ".png");
+            ImageIO.write(pic, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_saveImageButton1ActionPerformed
 
     @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g); // Do the original draw
         
-        int height = this.getHeight();
-        // aspect ratio
-        int width = height;
-        int blankSpace = (this.getWidth()-width) / 2;
-        //System.out.println("Height: "+height+", width: "+width+", blank space: "+blankSpace);
 
+
+        if (this.pic != null && widthOrig == getWidth() && heightOrig == getHeight()) {
+            g.drawImage(pic, 0, 0, this.getWidth(), this.getHeight(), null);
+            return;
+        }
         
+        heightOrig = this.getHeight();
+        widthOrig = this.getWidth();
+        // aspect ratio
+        int width = heightOrig;
+        int height = heightOrig;
+        int blankSpace = (this.getWidth()-width) / 2;
+        
+        pic = new BufferedImage(widthOrig, heightOrig, BufferedImage.TYPE_BYTE_INDEXED);
+        Graphics2D g2d = pic.createGraphics();
+        g2d.setBackground(Color.BLACK);
+        //g2d.fillRect(0, 0, widthOrig, height);
         /* 
             Pseudo code:
             (x, y)= a random point in the bi-unit square
@@ -73,14 +137,22 @@ public class BarnsleysFern extends javax.swing.JPanel {
             // choosing which function to use
             int randNum = (int)(Math.random() * (100) + 1), fun;
 
-            if (randNum <= 85)
+            if (randNum <= 85) {
                 fun = 1;
-            else if(randNum > 85 && randNum <= 92)
+                g2d.setColor(new Color(102,153,102));
+            }
+            else if(randNum > 85 && randNum <= 92) {
                 fun = 3;
-            else if(randNum > 92 && randNum <= 99)
+                g2d.setColor(new Color(51,102,153));
+            }
+            else if(randNum > 92 && randNum <= 99) {
                 fun = 2;
-            else
+                g2d.setColor(new Color(255,255,0));
+            }
+            else {
                 fun = 0;
+                g2d.setColor(new Color(153,0,51));
+            }
             // recalculate x and y coordinates
             prevx = x;
             x = x(x, y, fun);
@@ -89,12 +161,14 @@ public class BarnsleysFern extends javax.swing.JPanel {
             //System.out.println(y);
             
             if (i > 19)
-                plot (x, y, height, width, blankSpace, g);
+                plot (x, y, height, width, blankSpace, g2d);
             
             i++;
             
             //.out.println("Going through "+i+"th iteration...");
         }
+        
+        g.drawImage(pic, 0, 0, widthOrig, height, null);
         
     } 
     
@@ -140,10 +214,13 @@ public class BarnsleysFern extends javax.swing.JPanel {
         y = y*(width/9.9983);
         
         //System.out.println("Drawing x,y: "+(int)(x+blankSpace)+ ","+ (int)y);
-        g.setColor(Color.BLACK);
+        //g.setColor(Color.BLACK);
         g.drawOval((int)(x+blankSpace), (int)(height-y), 1, 1);
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton saveImageButton1;
     // End of variables declaration//GEN-END:variables
 }

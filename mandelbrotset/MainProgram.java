@@ -28,7 +28,7 @@ public class MainProgram extends javax.swing.JFrame {
 
     public MainProgram() {
         initComponents();
-        
+        this.setTitle("Fun with fractals");
         
         // centers the GUI window
        
@@ -53,7 +53,7 @@ public class MainProgram extends javax.swing.JFrame {
         
         // key bindings
         
-        buttonPanel.getInputMap(JPanel.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+        /*buttonPanel.getInputMap(JPanel.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
         KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
         buttonPanel.getActionMap().put("left", leftAction);
         
@@ -76,43 +76,43 @@ public class MainProgram extends javax.swing.JFrame {
         buttonPanel.getInputMap(JPanel.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
         KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "zoomout");
         buttonPanel.getActionMap().put("zoomout", zoomoutAction);
-        
+        */
         changePanel(new MandelbrotSet());
     }
 
     Action leftAction = new AbstractAction() {
     public void actionPerformed(ActionEvent e) {
-        leftActionPerformed(e);
+        //leftActionPerformed(e);
     }
    };
 
     Action rightAction = new AbstractAction() {
     public void actionPerformed(ActionEvent e) {
-        rightActionPerformed(e);
+        //rightActionPerformed(e);
     }
    };    
     
     Action upAction = new AbstractAction() {
     public void actionPerformed(ActionEvent e) {
-        upActionPerformed(e);
+        //upActionPerformed(e);
     }
    };  
         
     Action downAction = new AbstractAction() {
     public void actionPerformed(ActionEvent e) {
-        downActionPerformed(e);
+        //downActionPerformed(e);
     }
    };  
             
     Action zoomAction = new AbstractAction() {
     public void actionPerformed(ActionEvent e) {
-        zoomActionPerformed(e);
+        //zoomActionPerformed(e);
     }
    };  
                 
     Action zoomoutAction = new AbstractAction() {
     public void actionPerformed(ActionEvent e) {
-        zoomoutActionPerformed(e);
+        //zoomoutActionPerformed(e);
     }
    };  
                     
@@ -129,13 +129,6 @@ public class MainProgram extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        buttonPanel = new javax.swing.JPanel();
-        zoom = new javax.swing.JButton();
-        zoomout = new javax.swing.JButton();
-        left = new javax.swing.JButton();
-        up = new javax.swing.JButton();
-        down = new javax.swing.JButton();
-        right = new javax.swing.JButton();
         drawPanel1 = new mandelbrotset.MandelbrotSet();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
@@ -146,11 +139,11 @@ public class MainProgram extends javax.swing.JFrame {
         pythagorasTreeMenuItem = new javax.swing.JMenuItem();
         kochSnowflakeMenuItem = new javax.swing.JMenuItem();
         fractalPlantMenuItem = new javax.swing.JMenuItem();
+        dragonCurveMenuItem = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         barnsleysFernMenuItem = new javax.swing.JMenuItem();
         fractalFlameMenuItem = new javax.swing.JMenuItem();
         sierpinskiGasketMenuItem = new javax.swing.JMenuItem();
-        dragonCurveMenuItem = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         fractalTerrainMenuItem = new javax.swing.JMenuItem();
         brownianTreeMenuItem = new javax.swing.JMenuItem();
@@ -164,58 +157,6 @@ public class MainProgram extends javax.swing.JFrame {
         jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        buttonPanel.setBackground(new java.awt.Color(102, 102, 102));
-
-        zoom.setText("+");
-        zoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoomActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(zoom);
-
-        zoomout.setText("-");
-        zoomout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoomoutActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(zoomout);
-
-        left.setText("<");
-        left.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leftActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(left);
-
-        up.setText("▲");
-        up.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(up);
-
-        down.setText("▼");
-        down.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                downActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(down);
-
-        right.setText(">");
-        right.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rightActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(right);
-
-        getContentPane().add(buttonPanel, java.awt.BorderLayout.PAGE_END);
 
         javax.swing.GroupLayout drawPanel1Layout = new javax.swing.GroupLayout(drawPanel1);
         drawPanel1.setLayout(drawPanel1Layout);
@@ -284,6 +225,14 @@ public class MainProgram extends javax.swing.JFrame {
         });
         jMenu3.add(fractalPlantMenuItem);
 
+        dragonCurveMenuItem.setText("Dragon Curve");
+        dragonCurveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dragonCurveMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu3.add(dragonCurveMenuItem);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Iterated function systems");
@@ -312,14 +261,6 @@ public class MainProgram extends javax.swing.JFrame {
         });
         jMenu4.add(sierpinskiGasketMenuItem);
 
-        dragonCurveMenuItem.setText("Dragon Curve");
-        dragonCurveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dragonCurveMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu4.add(dragonCurveMenuItem);
-
         jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Random fractals");
@@ -346,51 +287,6 @@ public class MainProgram extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftActionPerformed
-        this.drawPanel1.left();
-        this.repaint();
-    }//GEN-LAST:event_leftActionPerformed
-
-    private void zoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomActionPerformed
-        Container contain = getContentPane();
-        JPanel panel = (JPanel) contain.getComponent(1);
-        if (panel instanceof JuliaSet)
-            ((JuliaSet)panel).zoomInc();
-        if (panel instanceof MandelbrotSet)
-            ((MandelbrotSet)panel).zoomInc();
-        if (panel instanceof KochSnowflake)
-            ((KochSnowflake)panel).level += 1;
-        this.repaint();
-    }//GEN-LAST:event_zoomActionPerformed
-
-    private void zoomoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomoutActionPerformed
-        Container contain = getContentPane();
-        JPanel panel = (JPanel) contain.getComponent(1);
-        if (panel instanceof JuliaSet)
-            ((JuliaSet)panel).zoomDec();
-            System.out.println("julia repaint");
-        if (panel instanceof MandelbrotSet)
-            ((MandelbrotSet)panel).zoomDec();
-        if (panel instanceof KochSnowflake) 
-            ((KochSnowflake)panel).level -= 1;
-        this.repaint();
-    }//GEN-LAST:event_zoomoutActionPerformed
-
-    private void rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightActionPerformed
-        this.drawPanel1.right();
-        this.repaint();
-    }//GEN-LAST:event_rightActionPerformed
-
-    private void upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upActionPerformed
-        this.drawPanel1.up();
-        this.repaint();
-    }//GEN-LAST:event_upActionPerformed
-
-    private void downActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downActionPerformed
-        this.drawPanel1.down();
-        this.repaint();
-    }//GEN-LAST:event_downActionPerformed
 
     private void juliaSetMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juliaSetMenuItemActionPerformed
         changePanel(new JuliaSet());
@@ -442,8 +338,8 @@ public class MainProgram extends javax.swing.JFrame {
 
     private void changePanel(JPanel panel) {
         Container contain = getContentPane();
-        contain.remove(1);
-        contain.add(panel,1);
+        contain.remove(0);
+        contain.add(panel,0);
         validate();
         repaint();
         //System.out.println("in4");
@@ -462,8 +358,6 @@ public class MainProgram extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem barnsleysFernMenuItem;
     private javax.swing.JMenuItem brownianTreeMenuItem;
-    private javax.swing.JPanel buttonPanel;
-    private javax.swing.JButton down;
     private javax.swing.JMenuItem dragonCurveMenuItem;
     private mandelbrotset.MandelbrotSet drawPanel1;
     private javax.swing.JMenuItem fractalFlameMenuItem;
@@ -481,14 +375,9 @@ public class MainProgram extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JMenuItem juliaSetMenuItem;
     private javax.swing.JMenuItem kochSnowflakeMenuItem;
-    private javax.swing.JButton left;
     private javax.swing.JMenuItem mandelbrotSetMenuItem;
     private javax.swing.JMenuItem newtonFractalMenuItem;
     private javax.swing.JMenuItem pythagorasTreeMenuItem;
-    private javax.swing.JButton right;
     private javax.swing.JMenuItem sierpinskiGasketMenuItem;
-    private javax.swing.JButton up;
-    private javax.swing.JButton zoom;
-    private javax.swing.JButton zoomout;
     // End of variables declaration//GEN-END:variables
 }

@@ -8,6 +8,12 @@ package mandelbrotset;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -15,10 +21,15 @@ import java.awt.Graphics;
  */
 public class SierpinskiGasket extends javax.swing.JPanel {
 
+    BufferedImage pic;
+    int heightOrig;
+    int widthOrig;
     /**
      * Creates new form SierpinskiGasket
      */
     public SierpinskiGasket() {
+        heightOrig = this.getHeight();
+        widthOrig = this.getWidth();
         initComponents();
     }
 
@@ -27,13 +38,24 @@ public class SierpinskiGasket extends javax.swing.JPanel {
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g); // Do the original draw
+
+        if (this.pic != null && widthOrig == getWidth() && heightOrig == getHeight()) {
+            g.drawImage(pic, 0, 0, this.getWidth(), this.getHeight(), null);
+            return;
+        }
         
         int height = this.getHeight()*2 - this.getHeight()/4;
         // aspect ratio
         int width = height;
         int blankSpace = 0;
-        //System.out.println("Height: "+height+", width: "+width+", blank space: "+blankSpace);
-
+        
+        heightOrig = this.getHeight();
+        widthOrig = this.getWidth();
+        pic = new BufferedImage(widthOrig, heightOrig, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g2d = pic.createGraphics();
+        //g2d.setBackground(Color.GRAY);
+        //g2d.fillRect(0, 0, widthOrig, heightOrig);
+        
         
         /* 
             Pseudo code:
@@ -56,20 +78,17 @@ public class SierpinskiGasket extends javax.swing.JPanel {
             // recalculate x and y coordinates
             x = x(x, fun);
             y = y(y, fun);
-            //System.out.println(x);
-            //System.out.println(y);
-            
+
             if (i > 19)
-                plot (x, y, height, width, blankSpace, g);
+                plot (x, y, height, width, blankSpace, g2d, fun);
             
             i++;
-            
-            //.out.println("Going through "+i+"th iteration...");
+
         }
         
+        g.drawImage(pic, 0, 0, widthOrig, heightOrig, null);
     } 
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,25 +98,72 @@ public class SierpinskiGasket extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        saveImageButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
+        saveImageButton1.setText("Save image");
+        saveImageButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("SIERPINSKI GASKET");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(222, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveImageButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void saveImageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButton1ActionPerformed
+
+        // Show the file chooser and get the value returned.
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        String image_name = new String();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            image_name = jFileChooser1.getSelectedFile().getPath();
+        }
+
+        try {
+            File outputfile = new File(image_name + ".png");
+            ImageIO.write(pic, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_saveImageButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton saveImageButton1;
     // End of variables declaration//GEN-END:variables
 
     private double x(double x, int fun) {
         switch(fun) {
-            case 0:
+            case 0: 
                 return x/2.0;
             case 1:
                 return (x+1)/2.0;
@@ -121,7 +187,18 @@ public class SierpinskiGasket extends javax.swing.JPanel {
         return -2;
     }
 
-    private void plot(double x, double y, int height, int width, int blankSpace, Graphics g) {
+    private void plot(double x, double y, int height, int width, int blankSpace, Graphics g, int fun) {
+        switch(fun) {
+            case 0:
+                g.setColor(new Color(102,153,102));
+                break;
+            case 1:
+                g.setColor(new Color(51,102,153));
+                break;
+            case 2:
+                g.setColor(new Color(153,0,51));
+                break;
+        }
         //System.out.println(x);
         //System.out.println(y);
         // get a number from 0 to 2
@@ -130,9 +207,7 @@ public class SierpinskiGasket extends javax.swing.JPanel {
         // multiply to get pixels, add or subtract to center it
         x = x*(height/2) - height/8;
         y = width - 1 - y*(width/2) + height/20;
-        
-        //System.out.println("Drawing x,y: "+(int)(x+blankSpace)+ ","+ (int)y);
-        g.setColor(Color.BLACK);
+
         g.drawOval((int)(x+blankSpace), (int)(y+blankSpace), 1, 1);
     }
 }

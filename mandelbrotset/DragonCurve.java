@@ -6,8 +6,15 @@
 
 package mandelbrotset;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -17,13 +24,17 @@ public class DragonCurve extends javax.swing.JPanel {
 
     String seq = "FX"; // axiom
     double scale = 3;
-    
+    int widthOrig;
+    int heightOrig;
+    BufferedImage pic;
     /**
      * Creates new form DragonCurve
      */
     public DragonCurve() {
         initComponents();
         buildString(15);
+        widthOrig = getWidth();
+        heightOrig = getHeight();
     }
 
 
@@ -33,26 +44,41 @@ public class DragonCurve extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g)
     {
+        
+        if (this.pic != null && widthOrig == getWidth() && heightOrig == getHeight()) {
+            g.drawImage(pic, 0, 0, widthOrig, heightOrig, null);
+            return;
+        }
+        
+        widthOrig = getWidth();
+        heightOrig = getHeight();
+        pic = new BufferedImage(widthOrig, heightOrig, BufferedImage.TYPE_BYTE_INDEXED);
+        Graphics2D g2d = pic.createGraphics();
+        
         //System.out.println("painting");
         super.paintComponent(g); // Do the original draw
-        scale = ((double)this.getHeight() / 300.0);
+        scale = ((double)this.getHeight() / 350.0);
         System.out.println("Scale: " + scale);
-        drawString(g, this.getHeight(), this.getWidth());
+        drawString(g2d, this.getHeight(), this.getWidth());
+        
+        g.drawImage(pic, 0, 0, widthOrig, heightOrig, null);
     }
     
     public void drawString(Graphics g, int height, int width) {
 
         int angle = 90;
-        int x = width/3, y = 2*height/3; // start drawing at bottom middle pixel of the screen
+        int x = width/3, y = 4*height/6; // start drawing at bottom middle pixel of the screen
         int newx = 0, newy = 0;
         
+        int it = 0;
         for(int i=0; i<seq.length(); i++) {
             if (seq.charAt(i) == 'F') {
                 
                 newx = x + (int)Math.round(scale * Math.sin(((2*Math.PI)/360) * angle));// (int)(scale/2 * Math.sqrt(2));
                 newy = y - (int)Math.round(scale * Math.cos(((2*Math.PI)/360) * angle));
-                
+                g.setColor(Color.getHSBColor(1.0f * it / 255, .8f, .8f));
                 g.drawLine(x, y, newx, newy);
+                if (i % 100 == 0) it++;
                 
             } else if(seq.charAt(i) == '+') {
                 
@@ -104,19 +130,66 @@ public class DragonCurve extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        saveImageButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
+        saveImageButton1.setText("Save image");
+        saveImageButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("DRAGON CURVE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(256, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void saveImageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButton1ActionPerformed
+
+        // Show the file chooser and get the value returned.
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        String image_name = new String();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            image_name = jFileChooser1.getSelectedFile().getPath();
+        }
+
+        try {
+            File outputfile = new File(image_name + ".png");
+            ImageIO.write(pic, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_saveImageButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton saveImageButton1;
     // End of variables declaration//GEN-END:variables
 }

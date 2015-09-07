@@ -7,6 +7,12 @@
 package mandelbrotset;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -26,17 +32,39 @@ public class KochSnowflake extends javax.swing.JPanel {
     int width;
     int level;
     
+    int widthOrig;
+    int heightOrig;
+    
+    BufferedImage pic;
+    
     @Override
-    public void paint(Graphics g){
- 
-        height = this.getHeight() - this.getHeight()/4;
+    public void paintComponent(Graphics g){
+        
+        super.paintComponent(g); // Do the original draw
+
+        widthOrig = getWidth();
+        heightOrig = getHeight();
+        height = this.getHeight() - heightOrig/5;
         width = this.getWidth();
         
-        int xStart = width/2 - height/2;
-        drawSnow(g, level, xStart + 20,             height - 20,   xStart + height - 20, height - 20);
-        drawSnow(g, level, xStart + height - 20,    height - 20,   xStart + height/2,    20);
-        drawSnow(g, level, xStart + height/2,       20,            xStart + 20,          height - 20);
+        
+        
+        
+        int xStart = width/3;        
+        
+        if (this.pic != null && widthOrig == getWidth() && heightOrig == getHeight()) {
+            g.drawImage(pic, 0, 0, widthOrig, heightOrig, null);
+            return;
+        }
+        pic = new BufferedImage(widthOrig, heightOrig, BufferedImage.TYPE_BYTE_INDEXED);
+        Graphics2D g2d = pic.createGraphics();
+        
+        drawSnow(g2d, level, xStart + 20,             height - 20,   xStart + height - 20, height - 20);
+        drawSnow(g2d, level, xStart + height - 20,    height - 20,   xStart + height/2,    20);
+        drawSnow(g2d, level, xStart + height/2,       20,            xStart + 20,          height - 20);
 
+        
+        g.drawImage(pic, 0, 0, widthOrig, heightOrig, null);
     }
  
     private void drawSnow (Graphics g, int lev, int x1, int y1, int x5, int y5){
@@ -65,12 +93,7 @@ public class KochSnowflake extends javax.swing.JPanel {
                 drawSnow (g,lev-1, x4, y4, x5, y5);
             }
         }
-    
-    
-    
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,19 +103,105 @@ public class KochSnowflake extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        zoom = new javax.swing.JButton();
+        saveImageButton1 = new javax.swing.JButton();
+        zoomout = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
+        zoom.setText("Increase depth");
+        zoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomActionPerformed(evt);
+            }
+        });
+
+        saveImageButton1.setText("Save image");
+        saveImageButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButton1ActionPerformed(evt);
+            }
+        });
+
+        zoomout.setText("Decrease depth");
+        zoomout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomoutActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("KOCH SNOWFLAKE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(zoomout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(zoom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveImageButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(234, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                .addComponent(zoomout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(zoom)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void zoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomActionPerformed
+
+        this.level += 1;
+        this.pic = null;
+        this.repaint();
+    }//GEN-LAST:event_zoomActionPerformed
+
+    private void saveImageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButton1ActionPerformed
+
+        // Show the file chooser and get the value returned.
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        String image_name = new String();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            image_name = jFileChooser1.getSelectedFile().getPath();
+        }
+
+        try {
+            File outputfile = new File(image_name + ".png");
+            ImageIO.write(pic, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_saveImageButton1ActionPerformed
+
+    private void zoomoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomoutActionPerformed
+        if(level > 0)
+            this.level -= 1;
+        this.pic = null;
+        this.repaint();
+    }//GEN-LAST:event_zoomoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton saveImageButton1;
+    private javax.swing.JButton zoom;
+    private javax.swing.JButton zoomout;
     // End of variables declaration//GEN-END:variables
 }

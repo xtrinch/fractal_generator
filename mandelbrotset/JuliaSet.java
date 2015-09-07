@@ -109,17 +109,15 @@ public class JuliaSet extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g)
     {
-
-        
+        super.paintComponent(g); // Do the original draw
         z0const_re = Double.parseDouble(realFormattedField.getText());
         z0const_im = Double.parseDouble(imagFormattedField.getText());
         height = this.getHeight();
         width = 3 * (height/2);//-100;s
         if (this.pic != null) {
-            g.drawImage(pic, (getWidth()-height)/2, 0, width, height, null);
+            g.drawImage(pic, (getWidth()-width)/2, 0, width, height, null);
             return;
         }
-        
         
         
         pic = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR );
@@ -135,7 +133,7 @@ public class JuliaSet extends javax.swing.JPanel {
         re_factor = (maxRe-minRe)/(width-1);
         im_factor = (maxIm-minIm)/(height-1);
         
-        super.paintComponent(g); // Do the original draw
+        
         
         for(int y=0; y<height; y++)
         {
@@ -199,9 +197,9 @@ public class JuliaSet extends javax.swing.JPanel {
 
         jLabel1.setText("Parameter c:");
 
-        jLabel2.setText("Real part:");
+        jLabel2.setText("Re:");
 
-        jLabel3.setText("Im. part:");
+        jLabel3.setText("Im:");
 
         realFormattedField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,7 +212,7 @@ public class JuliaSet extends javax.swing.JPanel {
 
         jLabel5.setText("f(z) = z^2 + c");
 
-        redrawImageButton.setText("Redraw image");
+        redrawImageButton.setText("Redraw");
         redrawImageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 redrawImageButtonActionPerformed(evt);

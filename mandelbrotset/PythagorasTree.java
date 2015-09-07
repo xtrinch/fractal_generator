@@ -8,7 +8,13 @@ package mandelbrotset;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -18,8 +24,10 @@ public class PythagorasTree extends javax.swing.JPanel {
 
     String seq = "0"; // axiom
     Stack stack;
-    int scale = 2;
-    
+    double scale = 2;
+    int width;
+    int height;
+    BufferedImage pic;
     /**
      * Creates new form PythagorasTree
      */
@@ -27,21 +35,37 @@ public class PythagorasTree extends javax.swing.JPanel {
         initComponents();
         buildString(8);
         stack = new Stack();
+        width = getWidth();
+        height = getHeight();
     }
     
     @Override
     public void paintComponent(Graphics g)
     {
-        System.out.println("painting");
+
         super.paintComponent(g); // Do the original draw
-        if(this.getHeight() <= 432) {
-            this.scale = 1;
-        } else {
-            System.out.println("scaling");    
+        if(this.getHeight() <= 532)
             this.scale = 2;
-            System.out.println(this.getHeight());
+        else 
+            this.scale = 4;
+        
+        if (this.pic != null && width == getWidth() && height == getHeight()) {
+            g.drawImage(pic, 0, 0, width, height, null);
+            return;
         }
-        drawString(g, this.getHeight(), this.getWidth());
+        
+        width = getWidth();
+        height = getHeight();
+
+        pic = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED);
+        
+        Graphics2D g2d = pic.createGraphics();
+        //g2d.setBackground(Color.WHITE);
+        //g2d.clearRect(0, 0, width, height);
+        drawString(g2d, this.getHeight(), this.getWidth());
+        
+        g.drawImage(pic, 0, 0, width, height, null);
+        
     }
     
     public void drawString(Graphics g, int height, int width) {
@@ -50,65 +74,25 @@ public class PythagorasTree extends javax.swing.JPanel {
         [: push position and angle, turn left 45 degrees
         ]: pop position and angle, turn right 45 degrees*/
         
+        int deltaAngle = 45;
         int angle = 0;
         int x = width/2, y = height; // start drawing at bottom middle pixel of the screen
         int newx = 0, newy = 0;
         
         for(int i=0; i<seq.length(); i++) {
-            if (seq.charAt(i) == '0') {
-                if (angle == 0) {
-                    newx = x;
-                    newy = y - scale;
-                } else if (angle == -45) {
-                    newx = x - (int)(scale/2 * Math.sqrt(2));
-                    newy = y - (int)(scale/2 * Math.sqrt(2));
-                } else if (angle == 45) {
-                    newx = x + (int)(scale/2 * Math.sqrt(2));
-                    newy = y - (int)(scale/2 * Math.sqrt(2)); 
-                } else if (angle == 90) {
-                    newx = x + scale;
-                    newy = y;
-                } else if (angle == -90) {
-                    newx = x - scale;
-                    newy = y;
-                } else if (angle == 180) {
-                    newx = x;
-                    newy = y + scale;
-                } else if (angle == 135) {
-                    newx = x + (int)(scale/2 * Math.sqrt(2));
-                    newy = y + (int)(scale/2 * Math.sqrt(2)); 
-                } else if (angle == -135) {
-                    newx = x - (int)(scale/2 * Math.sqrt(2));
-                    newy = y + (int)(scale/2 * Math.sqrt(2)); 
+            if (seq.charAt(i) == '0' || seq.charAt(i) == '1') {
+                double mul;
+                if(seq.charAt(i) == '0') {
+                    mul = 2;
+                    g.setColor(Color.GREEN);
+                }
+                else {
+                    mul = 1;
+                    g.setColor(Color.WHITE);
                 }
                 
-                g.drawLine(x, y, newx, newy);
-            } else if (seq.charAt(i) == '1') {
-                if (angle == 0) {
-                    newx = x;
-                    newy = y - scale*2;
-                } else if (angle == -45) {
-                    newx = x - (int)(scale * Math.sqrt(2));
-                    newy = y - (int)(scale * Math.sqrt(2));
-                } else if (angle == 45) {
-                    newx = x + (int)(scale * Math.sqrt(2));
-                    newy = y - (int)(scale * Math.sqrt(2)); 
-                } else if (angle == 90) {
-                    newx = x + scale*2;
-                    newy = y;
-                } else if (angle == -90) {
-                    newx = x - scale*2;
-                    newy = y;
-                } else if (angle == 180) {
-                    newx = x;
-                    newy = y + scale*2;
-                } else if (angle == 135) {
-                    newx = x + (int)(scale * Math.sqrt(2));
-                    newy = y + (int)(scale * Math.sqrt(2)); 
-                } else if (angle == -135) {
-                    newx = x - (int)(scale * Math.sqrt(2));
-                    newy = y + (int)(scale * Math.sqrt(2)); 
-                }
+                newx = x + (int)Math.round(mul * scale * Math.sin(((2*Math.PI)/360) * angle));
+                newy = y - (int)Math.round(mul * scale * Math.cos(((2*Math.PI)/360) * angle));
                 
                 g.drawLine(x, y, newx, newy);
             } else if(seq.charAt(i) == ']') {
@@ -117,18 +101,18 @@ public class PythagorasTree extends javax.swing.JPanel {
                 newy = (int) this.stack.pop();
                 newx = (int) this.stack.pop();
                 
-                angle += 45; 
+                angle += deltaAngle; 
                 if (angle > 180)
-                    angle = -135;
+                    angle = - (360 - angle);
             } else if(seq.charAt(i) == '[') {
                 // [: push position and angle, turn left 45 degrees
                 this.stack.push(x);
                 this.stack.push(y);
                 this.stack.push(angle);
                 
-                angle -= 45; 
+                angle -= deltaAngle; 
                 if (angle <= -180)
-                    angle = 180;
+                    angle = (360 + angle);
             }
             
             x = newx;
@@ -156,7 +140,6 @@ public class PythagorasTree extends javax.swing.JPanel {
     public void buildString(int n) {
         for(int i=0; i<n; i++) {
             rewrite();
-            System.out.println(this.seq);
         }
     }
     
@@ -169,31 +152,77 @@ public class PythagorasTree extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
+        saveImageButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
             }
         });
 
+        saveImageButton1.setText("Save image");
+        saveImageButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("PYTHAGORAS TREE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(229, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addComponent(saveImageButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         repaint();
-        System.out.println("resized");
     }//GEN-LAST:event_formComponentResized
+
+    private void saveImageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButton1ActionPerformed
+
+        // Show the file chooser and get the value returned.
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        String image_name = new String();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            image_name = jFileChooser1.getSelectedFile().getPath();
+        }
+
+        try {
+            File outputfile = new File(image_name + ".png");
+            ImageIO.write(pic, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_saveImageButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton saveImageButton1;
     // End of variables declaration//GEN-END:variables
 
 

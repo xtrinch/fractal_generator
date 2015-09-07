@@ -117,7 +117,6 @@ public class BrownianTree extends javax.swing.JPanel {
             if (dla[x][y]) {
                 particles++;
                 pic.setRGB(x, y, colors[(particles / 76) % 256].getRGB());
-                System.out.println("Setting rgb");
             }
             
             animatePixelCounter++;
