@@ -50,12 +50,14 @@ Java swing desktop application for generating different types of fractal images.
 ###Brownian tree
 ####Options:
 - animate the construction of the fractal
+
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/BrownianTree.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/browniantree_2.png' width='501'>
 
 ###Fractal terrain
 ####Options:
 - redraw, is random everytime
+
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/mountains.png' width='501'>
 
 ###Sierpinski's gasket
@@ -65,6 +67,7 @@ Java swing desktop application for generating different types of fractal images.
 ####Options:
 - modify all four function's coefficient set
 - use one of the computer provided variations on top of the generated fractal
+
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/tangent.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/polar.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/power.png' width='501'>
