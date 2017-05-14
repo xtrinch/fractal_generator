@@ -7,8 +7,8 @@ Java swing desktop application for generating different types of fractal images.
 
 ## Fractal images generated with the application
 
-###Mandelbrot set
-####Options:
+### Mandelbrot set
+#### Options:
 - zoom
 - left
 - right
@@ -18,8 +18,8 @@ Java swing desktop application for generating different types of fractal images.
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/mandelbrot.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/mandelbrotset.jpg' width='501'>
 
-###Julia set
-####Options:
+### Julia set
+#### Options:
 - Modify real part of parameter c (f(z) = z^2 + c)
 - Modify imaginary part of parameter c
 
@@ -28,8 +28,8 @@ Java swing desktop application for generating different types of fractal images.
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/julia_3.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/julia_4.png' width='501'>
 
-###Newton fractals
-####Options:
+### Newton fractals
+#### Options:
 - Specify up to 5 polynomial coefficients (y(z) = z + f(z)/f'(z))
 
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/newton_1.png' width='501'>
@@ -38,33 +38,33 @@ Java swing desktop application for generating different types of fractal images.
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/newton_4.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/newton_5.png' width='501'>
 
-###Barnsley's fern
+### Barnsley's fern
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/barnsleysfern.png' width='501'>
 
-###Dragon curve
+### Dragon curve
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/dragoncurve.png' width='501'>
 
-###Pythagora's tree
+### Pythagora's tree
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/pythagorastree.png' width='501'>
 
-###Brownian tree
-####Options:
+### Brownian tree
+#### Options:
 - animate the construction of the fractal
 
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/BrownianTree.png' width='501'>
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/browniantree_2.png' width='501'>
 
-###Fractal terrain
-####Options:
+### Fractal terrain
+#### Options:
 - redraw, is random everytime
 
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/mountains.png' width='501'>
 
-###Sierpinski's gasket
+### Sierpinski's gasket
 <img src='https://raw.githubusercontent.com/xtrinch/fractal_generator/master/images/sierpinskigasket.png' width='501'>
 
-###Fractal flames
-####Options:
+### Fractal flames
+#### Options:
 - modify all four function's coefficient set
 - use one of the computer provided variations on top of the generated fractal
 
